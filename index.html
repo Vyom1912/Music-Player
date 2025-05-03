@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Music Player</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="shortcut icon" href="image/bundle of joy.jpg" type="image/x-icon" />
+    <link rel="shortcut icon" href="image/icone.png" type="image/x-icon" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -14,26 +14,64 @@
       referrerpolicy="no-referrer" />
   </head>
   <body>
-    <div class="container">
-      <div class="music-player">
-        <img src="image/image-1.jpg" alt="Song Image" class="song-img" />
-        <h1>Bundle of Joy</h1>
-        <p>Inside Out Ft. Pixar</p>
-
-        <audio id="song">
-          <source src="Music/Bundle of Joy.mp3" type="audio/mpeg" />
-        </audio>
-
-        <input type="range" value="0" id="progress" />
-
-        <div class="controls">
-          <div>
-            <i class="fa-solid fa-backward" onclick="restartSong()"></i>
+    <div class="container flex flex-c">
+      <div class="top-bar flex flex-sb">
+        <h1 class="heading">Music Player</h1>
+        <div class="search-box flex flex-c">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="searchBar"
+            placeholder="Search songs or artists..." />
+        </div>
+      </div>
+      <div class="main flex flex-sb">
+        <div class="music-list" id="playlistDiv"></div>
+        <div class="music-player" id="musicPlayer">
+          <div class="back-btn" onclick="goBackToList()">
+            <i class="fa-solid fa-arrow-left"></i>
           </div>
-          <div onclick="togglePlayPause()">
-            <i class="fa-solid fa-play" id="ctrlIcon"></i>
+          <img
+            src="image/blue.jpeg"
+            alt="Song Image"
+            class="song-img"
+            id="songImg" />
+          <h1 id="songTitle">Title</h1>
+          <p id="songArtist">Artist</p>
+
+          <audio id="song"></audio>
+          <div class="controls-1 flex flex-end">
+            <div class="flex">
+              <i class="fa-solid fa-volume-high"></i
+              ><input
+                type="range"
+                id="volumeControl"
+                min="0"
+                max="1"
+                step="0.01" />
+            </div>
+            <i
+              class="fa-solid fa-arrow-down"
+              id="downloadSong"
+              onclick="downloadCurrentSong()"></i>
+            <i class="far fa-heart" id="favBtn" onclick="toggleFavorite()"></i>
           </div>
-          <div><i class="fa-solid fa-forward" onclick="restartSong()"></i></div>
+          <input type="range" value="0" id="progress" />
+          <div class="flex flex-sb">
+            <span class="time" id="currentTime">0:00</span
+            ><span class="time" id="duration">0:00</span>
+          </div>
+
+          <div class="controls flex flex-sb">
+            <i class="fas fa-random" id="suffle" onclick="shuffleSongs()"></i>
+            <i class="fas fa-backward" onclick="previousSong()"></i>
+            <i
+              class="fas fa-play"
+              id="ctrlIcon"
+              onclick="togglePlayPause()"></i>
+            <i class="fas fa-forward" onclick="nextSong()"></i>
+            <i class="fa-solid fa-repeat" id="loop" onclick="toggleLoop()"></i>
+          </div>
         </div>
       </div>
     </div>
