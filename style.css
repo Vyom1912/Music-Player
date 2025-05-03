@@ -137,6 +137,7 @@ width: 250px;
   border-radius: 5px;
 }
 .song-img {
+  margin-top:15px;
   width: 220px;
   object-fit: cover;
   border: 6px solid var(--basic-color);
