@@ -258,11 +258,19 @@ background: var(--secondary-color);
   color: var(--basic-color);
   background: var(--secondary-color);
 }
-.controls i:hover {
+/* .controls i:hover {
   color: var(--basic-color);
   background: var(--secondary-color);
 }
 .controls i:nth-child(3):hover {
+  color: var(--secondary-color);
+  background: var(--basic-color);
+} */
+.controls i:active {
+  color: var(--basic-color);
+  background: var(--secondary-color);
+}
+.controls i:nth-child(3):active {
   color: var(--secondary-color);
   background: var(--basic-color);
 }
