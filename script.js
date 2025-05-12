@@ -24,10 +24,34 @@ const songs = [
     img: "image/dandelions.jpeg",
   },
   {
-    title: "End of beginning",
+    title: "Deja Vu",
+    artist: "Olivia Rodrigo",
+    src: "Music/Deja vu.mp3",
+    img: "image/Deja vu.jpg",
+  },
+  {
+    title: "Die With A Smile",
+    artist: "Bruno Mars and Lady Gaga",
+    src: "Music/die with smile.mp3",
+    img: "image/Die with a smile.jpg",
+  },
+  {
+    title: "End Of Beginning",
     artist: "Djo",
     src: "Music/end of beginning.mp3",
     img: "image/end of beginning.jpg",
+  },
+  {
+    title: "Fortnight",
+    artist: "Taylor Swift",
+    src: "Music/Fortnight.mp3",
+    img: "image/fortnight.jpg",
+  },
+  {
+    title: "Gorgeous",
+    artist: "Taylor Swift",
+    src: "Music/Gorgeous.mp3",
+    img: "image/gorgeous.jpg",
   },
   {
     title: "Game of Thrones Theme",
@@ -36,10 +60,28 @@ const songs = [
     img: "image/got.jpg",
   },
   {
+    title: "Line Without A Hook",
+    artist: "Ricky Montgomery",
+    src: "Music/Line without a hook.mp3",
+    img: "image/Line without a hook.jpg",
+  },
+  {
+    title: "Look What You Made Me Do",
+    artist: "Taylor Swift",
+    src: "Music/Looks what you made me do.mp3",
+    img: "image/look what you made mr do.jpg",
+  },
+  {
     title: "Marvel",
     artist: "Marvel",
     src: "Music/marvel.mp3",
     img: "image/marvel.jpeg",
+  },
+  {
+    title: "Perfect",
+    artist: "Ed Sheeran",
+    src: "Music/perfect.mp3",
+    img: "image/perfect.jpg",
   },
   {
     title: "Runaway",
@@ -52,6 +94,12 @@ const songs = [
     artist: "Rosa Linn",
     src: "Music/snap.mp3",
     img: "image/snap.jpeg",
+  },
+  {
+    title: "The Night We Met",
+    artist: "Lord Huron",
+    src: "Music/the night we met.mp3",
+    img: "image/the night we met.jpg",
   },
 ];
 

@@ -90,14 +90,14 @@ width: 250px;
   flex: 1;
   flex-direction: column;
   width: 80%;
-  height: 100%;
+  /* height: 100%; */
   overflow: hidden;
-  /* background: var(--basic-color); */
 }
 .music-list {
   width: 30%;
   padding: 10px 0;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 .song-item {
   width: 100%;
@@ -112,13 +112,6 @@ width: 250px;
   font-weight: 300;
   transition: all 0.3s ease;
 }
-/* .song-item.active-song {
-  background: var(--secondary-color);
-  border-left: 4px solid var(--third-color);
-  border-top: 1px solid var(--third-color);
-  border-bottom: 1px solid var(--third-color);
-} */
-
 .song-item:hover {
   background: var(--secondary-color);
 }
@@ -128,19 +121,43 @@ width: 250px;
   border-radius: 3px;
   object-fit: cover;
 }
+.song-img {
+  margin-top: 20px;
+  width: 220px;
+  object-fit: cover;
+  border: 6px solid var(--basic-color);
+  box-shadow: 0 5px 10px rgba(88, 0, 108, 0.3);
+}
+/* ============================ */
+/* Scrollbar Styles for .main */
+.music-list::-webkit-scrollbar {
+  width: 15px;
+}
+
+.music-list::-webkit-scrollbar-track {
+  background: var(--text-color); /* Light pink background */
+  border-radius: 10px;
+}
+
+.music-list::-webkit-scrollbar-thumb {
+  background: var(--secondary-color); /* Purple thumb */
+  border-radius: 10px;
+  text-align: center;
+  border: 4px solid var(--text-color); /* Matches track */
+}
+
+.music-list::-webkit-scrollbar-thumb:hover {
+  background: var(--third-color); /* Darker purple on hover */
+}
+/* ============================ */
+
 .music-player {
   background: var(--third-color);
   width: 60%;
   height: 100%;
   padding: 25px 35px;
   text-align: center;
-  border-radius: 5px;
-}
-.song-img {
-  width: 220px;
-  object-fit: cover;
-  border: 6px solid var(--basic-color);
-  box-shadow: 0 5px 10px rgba(88, 0, 108, 0.3);
+  border-radius: 3px;
 }
 .music-player h1 {
   font-size: 20px;
@@ -172,16 +189,12 @@ width: 250px;
   color: var(--basic-color);
   background: var(--secondary-color);
 }
-/* .controls-1 i:hover {
-  color: var(--basic-color);
-  background: var(--secondary-color);
-} */
+
 .controls-1 div i:hover {
   color: var(--primary-color);
   background: var(--third-color);
 }
 .controls-1 input:in-range {
-  /* display: none; */
   -webkit-appearance: none;
   width: 100px;
   height: 5px;
@@ -204,7 +217,7 @@ width: 250px;
   background: var(--secondary-color);
   border-radius: 4px;
   cursor: pointer;
-  margin: 30px 0 0;
+  margin: 25px 0 0;
 }
 #progress::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -222,10 +235,6 @@ width: 250px;
   width: 100%;
   margin-top: 10px;
   flex-wrap: wrap;
-  /* gap: 20px; */
-  /* display: flex;
-align-items: center;
-justify-content: center; */
 }
 .controls i {
   width: 50px;
@@ -245,7 +254,7 @@ color: var(--basic-color);
 background: var(--secondary-color);
 } */
 .controls i:nth-child(3) {
-  transform: scale(1.3);
+  transform: scale(1.25);
   color: var(--basic-color);
   background: var(--secondary-color);
 }
@@ -314,8 +323,8 @@ background: var(--secondary-color);
     padding: 20px 30px;
   }
   .controls i {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
   }
   .song-img {
     width: 200px;
@@ -329,6 +338,7 @@ background: var(--secondary-color);
 @media (max-width: 600px) {
   .main {
     width: 95%;
+    height: auto;
   }
   .top-bar {
     width: 95%;
@@ -339,6 +349,9 @@ background: var(--secondary-color);
   }
   .song-img {
     width: 180px;
+  }
+  .music-player img {
+    margin-top: 25px;
   }
   .music-player h1 {
     font-size: 16px;
@@ -367,8 +380,8 @@ background: var(--secondary-color);
   }
   .controls i {
     font-size: 16px;
-    width: 33px;
-    height: 33px;
+    width: 45px;
+    height: 45px;
   }
 }
 @media (max-width: 550px) {
@@ -387,12 +400,12 @@ background: var(--secondary-color);
     position: relative;
   }
   .music-player {
-    width: 100%;
+    width: 95%;
     height: 100%;
     display: none;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 3%;
   }
   .music-player.show {
     display: block;
