@@ -1,4 +1,8 @@
+// ===============================
+// 🎵 SONG LIST DEFINITION
+// ===============================
 const songs = [
+  // Each song contains title, artist, source of music, and image
   {
     title: "All to Well",
     artist: "Taylor Swift",
@@ -103,9 +107,18 @@ const songs = [
   },
 ];
 
+// ===============================
+// 🎛️ GLOBAL VARIABLES
+// ===============================
 let currentSong = 0;
+let isPlaying = false;
+let isLooping = false;
+let isShuffleOn = false;
 const favorites = new Set();
 
+// ===============================
+// 🎚️ DOM ELEMENTS
+// ===============================
 const song = document.getElementById("song");
 const songTitle = document.getElementById("songTitle");
 const songArtist = document.getElementById("songArtist");
@@ -118,9 +131,12 @@ const volumeControl = document.getElementById("volumeControl");
 const currentTimeDisplay = document.getElementById("currentTime");
 const durationDisplay = document.getElementById("duration");
 const favBtn = document.getElementById("favBtn");
-const musicPlayer = document.getElementById("musicPlayer"); // ✅ Add this line
+const musicPlayer = document.getElementById("musicPlayer");
 
-function loadSong(index) {
+// ===============================
+// 🎵 LOAD A SONG BY INDEX
+// ===============================
+function loadSong(index, shouldAutoPlay = true) {
   const s = songs[index];
   song.src = s.src;
   songTitle.textContent = s.title;
@@ -128,48 +144,82 @@ function loadSong(index) {
   songImg.src = s.img;
   progress.value = 0;
   song.load();
-  song.play();
+
+  if (shouldAutoPlay) {
+    song.play();
+    isPlaying = true;
+    ctrlIcon.classList.replace("fa-play", "fa-pause");
+  } else {
+    isPlaying = false;
+    ctrlIcon.classList.replace("fa-pause", "fa-play");
+  }
+
   updateFavoriteIcon();
-  ctrlIcon.classList.remove("fa-play");
-  ctrlIcon.classList.add("fa-pause");
   localStorage.setItem("lastPlayed", index);
   displaySongs();
 }
 
+// ===============================
+// 📀 LOAD LAST PLAYED SONG
+// ===============================
 const lastPlayedIndex = localStorage.getItem("lastPlayed");
 if (lastPlayedIndex !== null && !isNaN(lastPlayedIndex)) {
-  currentSong = parseInt(lastPlayedIndex, 10);
+  currentSong = parseInt(lastPlayedIndex);
 }
 
-let isPlaying = false;
-
+// ===============================
+// ⏯️ TOGGLE PLAY/PAUSE
+// ===============================
 function togglePlayPause() {
+  if (!song.src) return;
+
   if (song.paused || song.ended) {
     song.play();
     isPlaying = true;
-    ctrlIcon.classList.remove("fa-play");
-    ctrlIcon.classList.add("fa-pause");
+    ctrlIcon.classList.replace("fa-play", "fa-pause");
   } else {
     song.pause();
     isPlaying = false;
-    ctrlIcon.classList.remove("fa-pause");
-    ctrlIcon.classList.add("fa-play");
+    ctrlIcon.classList.replace("fa-pause", "fa-play");
   }
 }
 
+// ===============================
+// ⏭️ NEXT / PREVIOUS SONG
+// ===============================
 function nextSong() {
-  currentSong = (currentSong + 1) % songs.length;
-  loadSong(currentSong);
+  if (isShuffleOn) {
+    currentSong = Math.floor(Math.random() * songs.length);
+  } else {
+    currentSong = (currentSong + 1) % songs.length;
+  }
+  loadSong(currentSong, true);
 }
 
 function previousSong() {
   currentSong = (currentSong - 1 + songs.length) % songs.length;
-  loadSong(currentSong);
+  loadSong(currentSong, true);
 }
 
-let isLooping = false;
-let isShuffleOn = false;
+// ===============================
+// 🔁 LOOP TOGGLE
+// ===============================
+function toggleLoop() {
+  isLooping = !isLooping;
+  song.loop = isLooping;
 
+  const loopBtn = document.querySelector(".fa-repeat");
+  loopBtn.style.color = isLooping
+    ? "var(--basic-color)"
+    : "var(--secondary-color)";
+  loopBtn.style.background = isLooping
+    ? "var(--secondary-color)"
+    : "var(--basic-color)";
+}
+
+// ===============================
+// 🔀 SHUFFLE SONGS
+// ===============================
 function shuffleSongs() {
   isShuffleOn = !isShuffleOn;
   const shuffleBtn = document.querySelector(".fa-random");
@@ -186,28 +236,16 @@ function shuffleSongs() {
 
 function playRandomSong() {
   currentSong = Math.floor(Math.random() * songs.length);
-  loadSong(currentSong);
+  loadSong(currentSong, isPlaying);
 }
 
-function toggleLoop() {
-  isLooping = !isLooping;
-  const loopBtn = document.querySelector(".fa-repeat");
-  loopBtn.style.color = isLooping
-    ? "var(--basic-color)"
-    : "var(--secondary-color)";
-  loopBtn.style.background = isLooping
-    ? "var(--secondary-color)"
-    : "var(--basic-color)";
-  song.loop = isLooping;
-}
-
+// ===============================
+// ❤️ FAVORITE TOGGLE
+// ===============================
 function toggleFavorite() {
   const title = songs[currentSong].title;
-  if (favorites.has(title)) {
-    favorites.delete(title);
-  } else {
-    favorites.add(title);
-  }
+  if (favorites.has(title)) favorites.delete(title);
+  else favorites.add(title);
   updateFavoriteIcon();
 }
 
@@ -217,15 +255,21 @@ function updateFavoriteIcon() {
   favBtn.classList.toggle("far", !favorites.has(title));
 }
 
+// ===============================
+// ⬇️ DOWNLOAD CURRENT SONG
+// ===============================
 function downloadCurrentSong() {
   const link = document.createElement("a");
-  link.href = song.src; // This must be a valid URL
+  link.href = song.src;
   link.setAttribute("download", `${songs[currentSong].title}.mp3`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
 
+// ===============================
+// ⏱️ PROGRESS BAR & TIMING
+// ===============================
 song.ontimeupdate = () => {
   progress.value = song.currentTime;
   currentTimeDisplay.textContent = formatTime(song.currentTime);
@@ -244,6 +288,11 @@ volumeControl.oninput = () => {
   song.volume = volumeControl.value;
 };
 
+song.addEventListener("ended", () => {
+  isPlaying = false;
+  ctrlIcon.classList.replace("fa-pause", "fa-play");
+});
+
 function formatTime(seconds) {
   const min = Math.floor(seconds / 60);
   const sec = Math.floor(seconds % 60)
@@ -252,7 +301,9 @@ function formatTime(seconds) {
   return `${min}:${sec}`;
 }
 
-// ✅ Search and filter
+// ===============================
+// 🔍 SEARCH FUNCTIONALITY
+// ===============================
 searchBar.addEventListener("input", () => {
   const query = searchBar.value.toLowerCase();
 
@@ -275,108 +326,47 @@ searchBar.addEventListener("input", () => {
     div.innerHTML = `<img src="${song.img}" /><div><strong>${song.title}</strong><br/><small>${song.artist}</small></div>`;
     div.onclick = () => {
       currentSong = songs.findIndex((s) => s.title === song.title);
-      loadSong(currentSong);
-
-      // ✅ Clear search
+      loadSong(currentSong, true);
       searchBar.value = "";
-
-      // ✅ Show player on small screens
-      if (window.innerWidth <= 550) {
-        musicPlayer.classList.add("show");
-      }
-
-      // ✅ Restore full song list
+      if (window.innerWidth <= 550) musicPlayer.classList.add("show");
       displaySongs();
     };
     playlistDiv.appendChild(div);
   });
 });
 
-// ✅ Show full song list
+// ===============================
+// 📜 DISPLAY SONG LIST
+// ===============================
 function displaySongs() {
   playlistDiv.innerHTML = songs
     .map((song, index) => {
-      return `<div class="song-item" data-index="${index}" onclick="songItemClick(${index})">
+      const isActive = index === currentSong ? "active-song" : "";
+      return `<div class="song-item ${isActive}" data-index="${index}" onclick="songItemClick(${index})">
         <img src="${song.img}" alt="Song Image" />
         <span>${song.title}</span>
       </div>`;
     })
     .join("");
 }
-// function displaySongs() {
-//   playlistDiv.innerHTML = songs
-//     .map((song, index) => {
-//       const isActive = index === currentSong ? "active-song" : "";
-//       return `<div class="song-item ${isActive}" data-index="${index}" onclick="songItemClick(${index})">
-//         <img src="${song.img}" alt="Song Image" />
-//         <span>${song.title}</span>
-//       </div>`;
-//     })
-//     .join("");
 
-//   // Scroll into view for active song
-//   const activeItem = playlistDiv.querySelector(".song-item.active-song");
-//   if (activeItem) {
-//     activeItem.scrollIntoView({ behavior: "smooth", block: "center" });
-//   }
-// }
-
-// ✅ Load initial list and last song
-displaySongs();
-loadSong(currentSong);
-
-// ✅ Song Item Click
+// 🔘 SONG ITEM CLICKED
 function songItemClick(index) {
-  loadSong(index);
-  if (window.innerWidth <= 550) {
-    musicPlayer.classList.add("show");
-  }
+  currentSong = index;
+  loadSong(index, true);
+  if (window.innerWidth <= 550) musicPlayer.classList.add("show");
 }
 
-// ✅ Go Back Button
+// ⬅️ GO BACK BUTTON FOR SMALL DEVICES
 function goBackToList() {
   if (window.innerWidth <= 550) {
     musicPlayer.classList.remove("show");
     song.pause();
   }
 }
-// -----------------------------------------------------------------
-// const song = document.getElementById("song");
-// const progress = document.getElementById("progress");
-// const ctrlIcon = document.getElementById("ctrlIcon");
 
-// // Set max progress bar value once metadata is loaded
-// song.onloadedmetadata = () => {
-//   progress.max = song.duration;
-// };
-
-// // Play/Pause toggle
-// function togglePlayPause() {
-//   if (song.paused) {
-//     song.play();
-//     ctrlIcon.classList.remove("fa-play");
-//     ctrlIcon.classList.add("fa-pause");
-//   } else {
-//     song.pause();
-//     ctrlIcon.classList.remove("fa-pause");
-//     ctrlIcon.classList.add("fa-play");
-//   }
-// }
-
-// // Update progress bar as song plays
-// song.addEventListener("timeupdate", () => {
-//   progress.value = song.currentTime;
-// });
-
-// // Seek to different time
-// progress.oninput = () => {
-//   song.currentTime = progress.value;
-// };
-
-// // Restart song from beginning
-// function restartSong() {
-//   song.currentTime = 0;
-//   song.play();
-//   ctrlIcon.classList.remove("fa-play");
-//   ctrlIcon.classList.add("fa-pause");
-// }
+// ===============================
+// 🚀 INITIALIZE PLAYER
+// ===============================
+displaySongs();
+loadSong(currentSong, false);

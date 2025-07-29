@@ -54,6 +54,7 @@ width: 250px;
   background: var(--primary-color);
 }
 .top-bar {
+  margin-top: 10px;
   width: 80%;
   overflow: hidden;
   padding: 0 0 20px 0;
@@ -61,7 +62,8 @@ width: 250px;
   gap: 10px;
 }
 .heading {
-  font-size: 20px;
+  width: 33%;
+  font-size: 30px;
   color: var(--basic-color);
   font-weight: 500;
 }
@@ -128,25 +130,33 @@ width: 250px;
   border: 6px solid var(--basic-color);
   box-shadow: 0 5px 10px rgba(88, 0, 108, 0.3);
 }
+.active-song {
+  background-color: var(--secondary-color);
+  border-left: 4px solid var(--third-color);
+}
 /* ============================ */
 /* Scrollbar Styles for .main */
-.music-list::-webkit-scrollbar {
+.music-list::-webkit-scrollbar,
+.music-player::-webkit-scrollbar {
   width: 15px;
 }
 
-.music-list::-webkit-scrollbar-track {
+.music-list::-webkit-scrollbar-track,
+.music-player::-webkit-scrollbar-track {
   background: var(--text-color); /* Light pink background */
   border-radius: 10px;
 }
 
-.music-list::-webkit-scrollbar-thumb {
+.music-list::-webkit-scrollbar-thumb,
+.music-player::-webkit-scrollbar-thumb {
   background: var(--secondary-color); /* Purple thumb */
   border-radius: 10px;
   text-align: center;
   border: 4px solid var(--text-color); /* Matches track */
 }
 
-.music-list::-webkit-scrollbar-thumb:hover {
+.music-list::-webkit-scrollbar-thumb:hover,
+.music-player::-webkit-scrollbar-thumb:hover {
   background: var(--third-color); /* Darker purple on hover */
 }
 /* ============================ */
@@ -154,10 +164,12 @@ width: 250px;
 .music-player {
   background: var(--third-color);
   width: 60%;
-  height: 100%;
-  padding: 25px 35px;
+  /* height: 100%; */
+  padding: 25px 35px 60px;
   text-align: center;
   border-radius: 3px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 .music-player h1 {
   font-size: 20px;
@@ -323,12 +335,15 @@ background: var(--secondary-color);
   }
 }
 @media (max-width: 768px) {
+  .heading {
+    font-size: 25px;
+  }
   .music-list {
     width: 40%;
   }
   .music-player {
     width: 60%;
-    padding: 20px 30px;
+    /* padding: 20px 30px; */
   }
   .controls i {
     width: 40px;
@@ -393,6 +408,11 @@ background: var(--secondary-color);
   }
 }
 @media (max-width: 550px) {
+  .heading {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
   .controls-1 #volumeControl {
     width: 80px;
   }
@@ -406,6 +426,7 @@ background: var(--secondary-color);
   .main {
     width: 100%;
     position: relative;
+    /* filter: blur(10px); */
   }
   .music-player {
     width: 95%;
@@ -420,6 +441,12 @@ background: var(--secondary-color);
   }
   .back-btn {
     display: block;
+  }
+  .controls i {
+    margin-top: -15px;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
   }
   .music-list {
     width: 90%;
